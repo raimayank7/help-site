@@ -73,6 +73,7 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
           <li><a href='/topics/comments/'>Comments</a></li>
           <li><a href='/topics/share/'>Share</a></li>
           <li><a href='/topics/deskorg/'>DeskOrg</a></li>
+          <li><a href='/topics/whatsapp/'>WhatsApp help</a></li>
           <li><a href='/topics/site/'>Site and ads</a></li>
           <li><a data-feedback='help' href='/p/contact-support.html'>Contact support</a></li>
         </ul>
@@ -150,7 +151,7 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
 })();</script><script>(function(){
 var p=location.pathname,msg=document.getElementById('nf-msg');
 var STOP=' a an the to of in on for and or is are am was be it its my me i you your do does did how what why when where which can cant cannot could not no dont doesnt didnt wont isnt working work works worked problem problems issue issues error errors help fix please too very much some about with from this that there use using used get got will want need should would way best free online tool tools app page site ';
-function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,'').replace(/[^a-z0-9]+/g,' ').trim()}
+function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,'').replace(/[^\p{L}\p{M}\p{N}]+/gu,' ').trim()}
 function stem(w){return w.length>4?w.replace(/(ions|ion|ings|ing|ors|or|ers|er|es|s|ed)$/,''):w}
 function wm(w,list){var b=0;for(var i=0;i<list.length;i++){var v=list[i];if(v===w)return 2;if(w.length>2&&v.length>2&&(v.indexOf(w)===0||w.indexOf(v)===0))b=1}return b}
 function rank(data,q){
@@ -179,7 +180,7 @@ function rank(data,q){
 function no(){msg.textContent='Sorry, this page is not here any more. Search for it below.'}
 if(/^\/search\/?$/.test(p)||/^\/search\?/.test(p)){location.replace('/search/'+location.search);return}
 var lab=p.match(/^\/search\/label\/([^\/?#]+)/);
-if(lab){var l=norm(decodeURIComponent(lab[1])),T={tools:'tools','free tools':'tools',tool:'tools',reading:'reading',novels:'reading',comments:'comments',comment:'comments',share:'share',deskorg:'deskorg','desk org':'deskorg',shareyourgroup:'share','share your group':'share',site:'site','site and ads':'site',ads:'site'};
+if(lab){var l=norm(decodeURIComponent(lab[1])),T={tools:'tools','free tools':'tools',tool:'tools',reading:'reading',novels:'reading',comments:'comments',comment:'comments',share:'share',deskorg:'deskorg','desk org':'deskorg',whatsapp:'whatsapp','whatsapp help':'whatsapp',shareyourgroup:'share','share your group':'share',site:'site','site and ads':'site',ads:'site'};
   location.replace(T[l]?'/topics/'+T[l]+'/':'/search/?q='+encodeURIComponent(l));return}
 var m=p.match(/^\/(?:\d{4}\/\d{2}\/)?([^\/]+?)(?:_\d+)?(?:\.html)?\/?$/);
 if(!m||/^p$/.test(m[1])){no();return}
