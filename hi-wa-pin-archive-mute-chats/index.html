@@ -206,4 +206,5 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
     document.body.appendChild(s);
   });
 })();</script>
+<script>if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})});</script>
 </body></html>

@@ -199,4 +199,5 @@ var t;input.addEventListener('input',function(){clearTimeout(t);t=setTimeout(fun
 input.form.addEventListener('submit',function(e){e.preventDefault();if(data)run()});
 if(!q)setTimeout(function(){input.focus()},50);
 })();</script>
+<script>if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})});</script>
 </body></html>

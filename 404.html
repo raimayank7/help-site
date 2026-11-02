@@ -196,4 +196,5 @@ fetch('/data/help.json').then(function(r){return r.json()}).then(function(d){
     if(w&&f){f.value=w;msg.innerHTML='Sorry, this page is not here any more. <a href="/search/?q='+encodeURIComponent(w)+'">Search for “'+w.replace(/[<&]/g,'')+'”</a> or try other words below.'}}
 }).catch(no);
 })();</script>
+<script>if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})});</script>
 </body></html>
