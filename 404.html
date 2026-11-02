@@ -38,6 +38,8 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
       <a href='/topics/reading/'>Reading</a>
       <a href='/topics/tools/'>Tools</a>
       <a href='/topics/comments/'>Comments</a>
+      <a href='/topics/shareyourgroup/'>ShareYourGroup help</a>
+      <a href='/topics/site/'>Site and ads</a>
       <a href='/p/contact-support.html'>Contact support</a>
       <a href='https://www.groupchaton.com/'>Novels &#8599;</a>
       <a href='https://infinity.groupchaton.com/'>Free tools &#8599;</a>
@@ -52,7 +54,7 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
   </div>
 </header>
 <main id='content'>
-<div class='container page-wrap'><article class='reading post'><div class='crumb'><a href='/'>Help home</a></div><h1 class='post-title'>Page not found</h1><div class='post-body'><p id='nf-msg'>Looking for the article you wanted…</p><form action='/search/' class='help-search' method='get' role='search'><input aria-label='Search help' name='q' type='search' placeholder='Search help'><button class='btn btn-primary' type='submit'>Search</button></form><p>Or start from the <a href='/'>Help home</a>.</p></div></article></div>
+<div class='container page-wrap'><article class='reading post'><div class='crumb'><a href='/'>Help home</a></div><h1 class='post-title'>Page not found</h1><div class='post-body'><p id='nf-msg'>Looking for the article you wanted…</p><form action='/search/' class='help-search' method='get' role='search'><input aria-label='Search help' id='nf-q' name='q' type='search' placeholder='Search help'><button class='btn btn-primary' type='submit'>Search</button></form><p>Or start from the <a href='/'>Help home</a>.</p></div></article></div>
 </main>
 <footer class='site-footer'>
   <div class='container'>
@@ -100,7 +102,7 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
       </nav>
     </div>
     <div class='footer-bottom'>
-      <p>&#169; <span data-year='1'>2026</span> <a href='https://www.groupchaton.com/'>GroupChatOn</a>. Help for readers and tool users.</p>
+      <p>&#169; <span data-year='1'>2026</span> <a href='https://www.groupchaton.com/'>GroupChatOn</a>. All rights reserved. Help for readers and tool users.</p>
       <!-- EDIT: credit -->
       <p class='credit'>Designed &amp; Developed by <a href='https://www.niveshsahayak.in/' rel='noopener' target='_blank'>Nivesh Sahayak</a></p>
     </div>
@@ -148,9 +150,38 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
   });
 })();</script><script>(function(){
 var p=location.pathname,msg=document.getElementById('nf-msg');
-function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim()}
+var STOP=' a an the to of in on for and or is are am was be it its my me i you your do does did how what why when where which can cant cannot could not no dont doesnt didnt wont isnt working work works worked problem problems issue issues error errors help fix please too very much some about with from this that there use using used get got will want need should would way best free online tool tools app page site ';
+function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,'').replace(/[^a-z0-9]+/g,' ').trim()}
+function stem(w){return w.length>4?w.replace(/(ions|ion|ings|ing|ors|or|ers|er|es|s|ed)$/,''):w}
+function wm(w,list){var b=0;for(var i=0;i<list.length;i++){var v=list[i];if(v===w)return 2;if(w.length>2&&v.length>2&&(v.indexOf(w)===0||w.indexOf(v)===0))b=1}return b}
+function rank(data,q){
+  var all=norm(q).split(' ').filter(Boolean),req=all.filter(function(w){return STOP.indexOf(' '+w+' ')<0}),opt;
+  if(!req.length)req=all;opt=all.filter(function(w){return req.indexOf(w)<0});
+  var rs=req.map(stem),phrase=norm(q);
+  var res=data.map(function(x){
+    if(!x._n){var t=norm(x.t),c=x.t.indexOf(':');x._t=t.split(' ').map(stem);x._n=norm(c>0?x.t.slice(0,c):x.t).split(' ').map(stem);
+      x._d=norm(x.d+' '+x.c+' '+x.s.replace(/-/g,' ')).split(' ').map(stem);x._tt=t}
+    var s=0,hit=0,inName=0,inTitle=0;
+    rs.forEach(function(w){var m;
+      if((m=wm(w,x._n))){s+=m===2?8:5;hit++;inName++;inTitle++}
+      else if((m=wm(w,x._t))){s+=m===2?5:3;hit++;inTitle++}
+      else if(wm(w,x._d)){s+=1;hit++}});
+    opt.forEach(function(w){if(wm(stem(w),x._t)===2)s+=.5});
+    if(inName===rs.length)s+=20-x._n.length;else if(inTitle===rs.length)s+=8;
+    if(phrase.length>3&&x._tt.indexOf(phrase)>=0)s+=10;
+    return {x:x,s:s,full:hit===rs.length,hit:hit}});
+  var full=res.filter(function(r){return r.full}),partial=!full.length;
+  var list=partial?res.filter(function(r){return r.hit>0&&r.hit>=Math.ceil(rs.length/2)}):full;
+  list.sort(function(a,b){return b.s-a.s});
+  if(list.length){var top=list[0].s;list=list.filter(function(r){return r.s>=top*.3})}
+  return {items:list.map(function(r){return r.x}),partial:partial};
+}
+
 function no(){msg.textContent='Sorry, this page is not here any more. Search for it below.'}
 if(/^\/search\/?$/.test(p)||/^\/search\?/.test(p)){location.replace('/search/'+location.search);return}
+var lab=p.match(/^\/search\/label\/([^\/?#]+)/);
+if(lab){var l=norm(decodeURIComponent(lab[1])),T={tools:'tools','free tools':'tools',tool:'tools',reading:'reading',novels:'reading',comments:'comments',comment:'comments',shareyourgroup:'shareyourgroup','share your group':'shareyourgroup',site:'site','site and ads':'site',ads:'site'};
+  location.replace(T[l]?'/topics/'+T[l]+'/':'/search/?q='+encodeURIComponent(l));return}
 var m=p.match(/^\/(?:\d{4}\/\d{2}\/)?([^\/]+?)(?:_\d+)?(?:\.html)?\/?$/);
 if(!m||/^p$/.test(m[1])){no();return}
 var old=norm(decodeURIComponent(m[1]).replace(/-/g,' '));if(!old){no();return}
@@ -161,7 +192,8 @@ fetch('/data/help.json').then(function(r){return r.json()}).then(function(d){
     else{var tw=t.split(' ').concat(norm(x.s).split(' ')),hit=0;ow.forEach(function(w){if(w.length>2&&tw.indexOf(w)>=0)hit++});s=hit/Math.max(ow.filter(function(w){return w.length>2}).length,1)*40}
     if(s>bs){bs=s;best=x}});
   if(best&&bs>=26){msg.textContent='This article moved. Opening “'+best.t+'”…';location.replace('/'+best.s+'/'+location.hash)}
-  else{no();var f=document.querySelector('.help-search input');if(f)f.value=old}
+  else{no();var w=old.split(' ').filter(function(x){return x.length>1&&STOP.indexOf(' '+x+' ')<0&&!/^\d+$/.test(x)}).join(' '),f=document.getElementById('nf-q');
+    if(w&&f){f.value=w;msg.innerHTML='Sorry, this page is not here any more. <a href="/search/?q='+encodeURIComponent(w)+'">Search for “'+w.replace(/[<&]/g,'')+'”</a> or try other words below.'}}
 }).catch(no);
 })();</script>
 </body></html>
