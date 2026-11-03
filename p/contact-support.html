@@ -59,23 +59,10 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
 <div class='container page-wrap'><article class='reading post'><div class='crumb'><a href='/'>Help home</a></div><h1 class='post-title'>Contact Support</h1><div class='post-body'><div class="gco-page">
 <p class="page-lead">Something not working on GroupChatOn or one of the free tools? Tell us what happened, and we’ll reply by email.</p>
 <div class="help-contact-box">
-<p><b>Send us a message.</b> Write it here and tap the button: your message is copied and GroupChatOn’s contact form opens in a new tab. Paste it into the message box, add your email and press <b>Send</b>. We reply by email.</p>
-<div class="fb-form">
-<label class="fb-field"><span>It is about</span><select id="cs-topic"><option>A free tool</option><option>Reading a novel</option><option>Comments</option><option>Share</option><option>Something else</option></select></label>
-<label class="fb-field"><span>What went wrong?</span><input id="cs-what" maxlength="200" placeholder="e.g. The PDF tool says the file is password-protected" type="text"></label>
-<label class="fb-field"><span>Details (optional)</span><textarea id="cs-note" maxlength="1200" placeholder="The page link, what you tried, and your phone or computer and browser (e.g. Android, Chrome)." rows="4"></textarea></label>
-<a class="btn btn-primary" data-cs-send="1" href="https://www.groupchaton.com/p/contact-us.html" rel="noopener" target="_blank">Copy my message and open the contact form</a>
-<p class="fb-status" role="status" aria-live="polite"></p>
-</div>
+<p><b>Send us a message.</b> All messages for GroupChatOn sites go through one contact form on our main site. Write your message there, add your email and press <b>Send</b>. We reply by email.</p>
+<p><a class="btn btn-primary" href="https://www.groupchaton.com/p/contact-us.html">Open the contact form</a></p>
 <p>Prefer not to use email? Ask in the comments below instead (comments are public, so don’t share phone numbers or passwords).</p>
 </div>
-<script>(function(){var a=document.querySelector('[data-cs-send]');if(!a)return;a.addEventListener('click',function(e){
-var w=document.getElementById('cs-what'),st=a.parentNode.querySelector('.fb-status');
-if(!w.value.trim()){e.preventDefault();st.className='fb-status is-error';st.textContent='Tell us briefly what went wrong.';w.focus();return}
-var t='[Help] '+document.getElementById('cs-topic').value+': '+w.value.trim()+'\nDetails: '+(document.getElementById('cs-note').value.trim()||'-');
-function done(ok){if(ok){st.className='fb-status is-ok';st.textContent='Copied. In the new tab, paste it into the message box, add your email and press Send.'}
-else{st.className='fb-status is-error';st.textContent='Your browser did not let us copy it. Select your message above, copy it (Ctrl+C, or long-press › Copy), then paste it into the form in the new tab.'}}
-var c=window.GCO&&GCO.copy;if(c)c(t).then(done,function(){done(false)});else{try{navigator.clipboard.writeText(t).then(function(){done(true)},function(){done(false)})}catch(x){done(false)}}})})();</script>
 <section class="help-comments" data-id="contact-support" data-url="https://help.groupchaton.com/p/contact-support.html">
 <h2>Or ask in the comments</h2>
 <button class="btn" data-load-comments="1" type="button"><span aria-hidden="true">&#128172;</span> Show comments</button>
