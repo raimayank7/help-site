@@ -16,8 +16,10 @@
 <script>(function(){var t='auto',d=document.documentElement;try{t=JSON.parse(localStorage.getItem('gct-theme'))||'auto'}catch(e){}
 if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';d.className+=' js';d.setAttribute('data-theme',t);})();</script>
 <style>html{background:#F3F7F6}html[data-theme='dark']{background:#0D1514;color-scheme:dark}body{margin:0}img{max-width:100%;height:auto}.site-header .brand-logo{height:40px;width:auto}#gco-boot{position:fixed;top:0;left:0;height:3px;width:40%;background:#0D9488;z-index:99;animation:gcob 1s ease-in-out infinite}@keyframes gcob{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}</style>
-<link rel="preconnect" href="https://assets.infinity.groupchaton.com">
+<link rel="preconnect" href="https://assets.infinity.groupchaton.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="manifest" href="/manifest.webmanifest">
 <link rel="stylesheet" href="https://assets.infinity.groupchaton.com/assets/help.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&amp;family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap">
 <style>#gco-boot{display:none}</style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-T8034QP7LQ"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-T8034QP7LQ');</script>
@@ -71,7 +73,7 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
       </div>
       <!-- EDIT: footer links -->
       <nav aria-label='Topics'>
-        <h4>Topics</h4>
+        <h2 class='foot-title'>Topics</h2>
         <ul>
           <li><a href='/topics/reading/'>Reading</a></li>
           <li><a href='/topics/tools/'>Free tools</a></li>
@@ -84,7 +86,7 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
         </ul>
       </nav>
       <nav aria-label='Popular'>
-        <h4>Popular</h4>
+        <h2 class='foot-title'>Popular</h2>
         <ul>
           <li><a href='/search/?q=reading+settings'>Change font, size and theme</a></li>
           <li><a href='/search/?q=comments+not+showing'>Comments not showing</a></li>
@@ -94,7 +96,7 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
         </ul>
       </nav>
       <nav aria-label='Site'>
-        <h4>GroupChatOn</h4>
+        <h2 class='foot-title'>GroupChatOn</h2>
         <ul>
           <li><a href='https://www.groupchaton.com/'>Read novels</a></li>
           <li><a href='https://infinity.groupchaton.com/'>Free tools</a></li>
@@ -157,26 +159,34 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
 var input=document.getElementById('q'),out=document.getElementById('search-results'),count=document.getElementById('search-count'),data=null;
 var q=new URLSearchParams(location.search).get('q')||'';input.value=q;
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function card(x){return '<article class="post-row is-rich" style="--cat:'+x.k+'"><span aria-hidden="true" class="row-ic">'+x.i+'</span><div class="row-text"><span class="row-cat">'+esc(x.c)+'</span><h3><a href="/'+x.s+'/">'+esc(x.t)+'</a></h3><p class="row-desc">'+esc(x.d)+'</p></div></article>'}
+function card(x){return '<article class="post-row is-rich" style="--cat:'+x.k+'"><span aria-hidden="true" class="row-ic">'+x.i+'</span><div class="row-text"><span class="row-cat">'+esc(x.c)+'</span><h2><a href="/'+x.s+'/">'+esc(x.t)+'</a></h2><p class="row-desc">'+esc(x.d)+'</p></div></article>'}
 var STOP=' a an the to of in on for and or is are am was be it its my me i you your do does did how what why when where which can cant cannot could not no dont doesnt didnt wont isnt working work works worked problem problems issue issues error errors help fix please too very much some about with from this that there use using used get got will want need should would way best free online tool tools app page site ';
-function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,'').replace(/[^\p{L}\p{M}\p{N}]+/gu,' ').trim()}
-function stem(w){return w.length>4?w.replace(/(ions|ion|ings|ing|ors|or|ers|er|es|s|ed)$/,''):w}
-function wm(w,list){var b=0;for(var i=0;i<list.length;i++){var v=list[i];if(v===w)return 2;if(w.length>2&&v.length>2&&(v.indexOf(w)===0||w.indexOf(v)===0))b=1}return b}
-function rank(data,q){
-  var all=norm(q).split(' ').filter(Boolean),req=all.filter(function(w){return STOP.indexOf(' '+w+' ')<0}),opt;
-  if(!req.length)req=all;opt=all.filter(function(w){return req.indexOf(w)<0});
-  var rs=req.map(stem),phrase=norm(q);
+function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f\u093c\u0a3c\u0a71]/g,'').replace(/\u0901/g,'\u0902').replace(/\u0a70/g,'\u0a02').replace(/[\u2019']/g,'').replace(/[^\p{L}\p{M}\p{N}]+/gu,' ').trim()}
+var SYN={};[['निजता','प्राइवेसी'],['गोपनीयता','प्राइवेसी'],['ਨਿੱਜਤਾ','ਪ੍ਰਾਈਵੇਸੀ'],['पोल','poll'],['ਪੋਲ','poll'],['फोटो','photo'],['वीडियो','video']].forEach(function(p){SYN[norm(p[0])]=norm(p[1])});
+function stem(w){var r=w.length>4?w.replace(/(ions|ion|ings|ing|ors|or|ers|er|es|s|ed)$/,''):w;return r.length<4?w:r}
+function ed(a,b,max){if(Math.abs(a.length-b.length)>max)return max+1;var p2=[],p=[],c,i,j;for(j=0;j<=b.length;j++)p[j]=j;
+  for(i=1;i<=a.length;i++){c=[i];var mn=i;for(j=1;j<=b.length;j++){var v=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));
+    if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])v=Math.min(v,p2[j-2]+1);c[j]=v;if(v<mn)mn=v}if(mn>max)return max+1;p2=p;p=c}return p[b.length]}
+function wm(w,list,fz){var b=0,lim=w.length>6?2:1;for(var i=0;i<list.length;i++){var v=list[i];if(v===w)return 2;
+  if(w.length>2&&v.length>2&&(v.indexOf(w)===0||(w.indexOf(v)===0&&v.length>=w.length*.7)))b=1;else if(fz&&!b&&w.length>3&&v.length>3&&ed(w,v,lim)<=lim)b=.5}return b}
+function rank1(data,q,fz){
+  var all=norm(q).split(' ').filter(Boolean).map(function(w){return SYN[w]||w}),req=all.filter(function(w){return STOP.indexOf(' '+w+' ')<0}),opt;
+  if(!req.length)return {items:[],stop:true};opt=all.filter(function(w){return req.indexOf(w)<0});
+  var rs=req.map(stem),phrase=norm(q),latin=/^[a-z0-9 ]*$/.test(phrase);
   var res=data.map(function(x){
-    if(!x._n){var t=norm(x.t),c=x.t.indexOf(':');x._t=t.split(' ').map(stem);x._n=norm(c>0?x.t.slice(0,c):x.t).split(' ').map(stem);
+    if(!x._n){var t=norm(x.t),c=x.t.indexOf(':'),tw=t.split(' ');x._t=tw.concat(tw.slice(1).map(function(w,i){return tw[i]+w})).map(stem);   /* 'back up' also as 'backup' */
+      x._n=norm(c>0?x.t.slice(0,c):x.t).split(' ').map(stem);
       x._d=norm(x.d+' '+x.c+' '+x.s.replace(/-/g,' ')).split(' ').map(stem);x._tt=t}
     var s=0,hit=0,inName=0,inTitle=0;
     rs.forEach(function(w){var m;
-      if((m=wm(w,x._n))){s+=m===2?8:5;hit++;inName++;inTitle++}
-      else if((m=wm(w,x._t))){s+=m===2?5:3;hit++;inTitle++}
-      else if(wm(w,x._d)){s+=1;hit++}});
+      if((m=wm(w,x._n,fz))){s+=m===2?8:m===1?5:3;hit++;inName++;inTitle++}
+      else if((m=wm(w,x._t,fz))){s+=m===2?5:m===1?3:2;hit++;inTitle++}
+      else if((m=wm(w,x._d,fz))){s+=m<1?.5:1;hit++}});
     opt.forEach(function(w){if(wm(stem(w),x._t)===2)s+=.5});
     if(inName===rs.length)s+=20-x._n.length;else if(inTitle===rs.length)s+=8;
     if(phrase.length>3&&x._tt.indexOf(phrase)>=0)s+=10;
+    if(wm(rs[0],[x._n[0]],fz))s+=2;   // same word order as the name: "speech to text" before "text to speech"
+    if(latin&&x.c.indexOf(' · ')>0)s-=12;   // an English query: English articles before the Hindi/Punjabi/Bhojpuri ones
     return {x:x,s:s,full:hit===rs.length,hit:hit}});
   var full=res.filter(function(r){return r.full}),partial=!full.length;
   var list=partial?res.filter(function(r){return r.hit>0&&r.hit>=Math.ceil(rs.length/2)}):full;
@@ -184,13 +194,16 @@ function rank(data,q){
   if(list.length){var top=list[0].s;list=list.filter(function(r){return r.s>=top*.3})}
   return {items:list.map(function(r){return r.x}),partial:partial};
 }
+function rank(data,q){var o=rank1(data,q,false);if(o.stop||(o.items.length&&!o.partial))return o;
+  var f=rank1(data,q,true);f.fuzzy=true;return (f.items.length&&!f.partial)||!o.items.length?f:o}
 
 function run(){
-  var words=norm(input.value).split(' ').filter(Boolean),res;
-  if(!words.length){res=data.slice().sort(function(a,b){return a.t.localeCompare(b.t)});count.textContent='All '+data.length+' help articles. Type above to narrow them down.'}
-  else{var o=rank(data,input.value);res=o.items;
-    count.textContent=!res.length?'No articles match “'+input.value.trim()+'”. Try fewer or different words, or contact support.':
-      (o.partial?'No article has all of those words. Closest '+res.length+' for “':res.length+' article'+(res.length>1?'s':'')+' for “')+input.value.trim()+'”'}
+  var words=norm(input.value).split(' ').filter(Boolean),res,qq=input.value.trim(),o=words.length?rank(data,input.value):null,n=function(k){return k+' article'+(k>1?'s':'')};
+  if(!o||o.stop){res=data.slice().sort(function(a,b){return a.t.localeCompare(b.t)});
+    count.textContent=o?'“'+qq+'” is too common to search for on its own. Add a word such as pdf, comments or backup. All '+data.length+' help articles:':'All '+data.length+' help articles. Type above to narrow them down.'}
+  else{res=o.items;
+    count.textContent=!res.length?'No articles match “'+qq+'”. Check the spelling, try fewer or different words, or contact support.':
+      o.partial?'No article has all of those words. Closest '+res.length+' for “'+qq+'”':o.fuzzy?n(res.length)+' for words like “'+qq+'” (check the spelling)':n(res.length)+' for “'+qq+'”'}
   out.innerHTML=res.slice(0,200).map(card).join('');
   document.title=(words.length?'“'+input.value.trim()+'” · ':'')+'Search help articles | GroupChatOn Help';
 }

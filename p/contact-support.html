@@ -16,8 +16,10 @@
 <script>(function(){var t='auto',d=document.documentElement;try{t=JSON.parse(localStorage.getItem('gct-theme'))||'auto'}catch(e){}
 if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';d.className+=' js';d.setAttribute('data-theme',t);})();</script>
 <style>html{background:#F3F7F6}html[data-theme='dark']{background:#0D1514;color-scheme:dark}body{margin:0}img{max-width:100%;height:auto}.site-header .brand-logo{height:40px;width:auto}#gco-boot{position:fixed;top:0;left:0;height:3px;width:40%;background:#0D9488;z-index:99;animation:gcob 1s ease-in-out infinite}@keyframes gcob{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}</style>
-<link rel="preconnect" href="https://assets.infinity.groupchaton.com">
+<link rel="preconnect" href="https://assets.infinity.groupchaton.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="manifest" href="/manifest.webmanifest">
 <link rel="stylesheet" href="https://assets.infinity.groupchaton.com/assets/help.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&amp;family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap">
 <style>#gco-boot{display:none}</style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-T8034QP7LQ"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-T8034QP7LQ');</script>
@@ -57,7 +59,7 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
 <div class='container page-wrap'><article class='reading post'><div class='crumb'><a href='/'>Help home</a></div><h1 class='post-title'>Contact Support</h1><div class='post-body'><div class="gco-page">
 <p class="page-lead">Something not working on GroupChatOn or one of the free tools? Tell us what happened, and we’ll reply by email.</p>
 <div class="help-contact-box">
-<p><b>Send us a message.</b> Help’s own message form is moving to a new home, so for now it goes through GroupChatOn’s contact form: write your message here, tap the button, then paste it into the form that opens, add your email and press <b>Send</b>. We reply by email.</p>
+<p><b>Send us a message.</b> Write it here and tap the button: your message is copied and GroupChatOn’s contact form opens in a new tab. Paste it into the message box, add your email and press <b>Send</b>. We reply by email.</p>
 <div class="fb-form">
 <label class="fb-field"><span>It is about</span><select id="cs-topic"><option>A free tool</option><option>Reading a novel</option><option>Comments</option><option>Share</option><option>Something else</option></select></label>
 <label class="fb-field"><span>What went wrong?</span><input id="cs-what" maxlength="200" placeholder="e.g. The PDF tool says the file is password-protected" type="text"></label>
@@ -70,13 +72,13 @@ if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').ma
 <script>(function(){var a=document.querySelector('[data-cs-send]');if(!a)return;a.addEventListener('click',function(e){
 var w=document.getElementById('cs-what'),st=a.parentNode.querySelector('.fb-status');
 if(!w.value.trim()){e.preventDefault();st.className='fb-status is-error';st.textContent='Tell us briefly what went wrong.';w.focus();return}
-var t='[Help] '+document.getElementById('cs-topic').value+': '+w.value.trim()+'
-Details: '+(document.getElementById('cs-note').value.trim()||'-');
-try{navigator.clipboard.writeText(t)}catch(x){}
-st.className='fb-status is-ok';st.textContent='Copied. In the new tab, paste it into the message box, add your email and press Send.'})})();</script>
+var t='[Help] '+document.getElementById('cs-topic').value+': '+w.value.trim()+'\nDetails: '+(document.getElementById('cs-note').value.trim()||'-');
+function done(ok){if(ok){st.className='fb-status is-ok';st.textContent='Copied. In the new tab, paste it into the message box, add your email and press Send.'}
+else{st.className='fb-status is-error';st.textContent='Your browser did not let us copy it. Select your message above, copy it (Ctrl+C, or long-press › Copy), then paste it into the form in the new tab.'}}
+var c=window.GCO&&GCO.copy;if(c)c(t).then(done,function(){done(false)});else{try{navigator.clipboard.writeText(t).then(function(){done(true)},function(){done(false)})}catch(x){done(false)}}})})();</script>
 <section class="help-comments" data-id="contact-support" data-url="https://help.groupchaton.com/p/contact-support.html">
 <h2>Or ask in the comments</h2>
-<button class="btn" data-load-comments="1" type="button">&#128172; Show comments</button>
+<button class="btn" data-load-comments="1" type="button"><span aria-hidden="true">&#128172;</span> Show comments</button>
 <div id="disqus_thread"></div>
 </section>
 <h2>Help us fix it faster</h2>
@@ -96,7 +98,7 @@ st.className='fb-status is-ok';st.textContent='Copied. In the new tab, paste it 
       </div>
       <!-- EDIT: footer links -->
       <nav aria-label='Topics'>
-        <h4>Topics</h4>
+        <h2 class='foot-title'>Topics</h2>
         <ul>
           <li><a href='/topics/reading/'>Reading</a></li>
           <li><a href='/topics/tools/'>Free tools</a></li>
@@ -109,7 +111,7 @@ st.className='fb-status is-ok';st.textContent='Copied. In the new tab, paste it 
         </ul>
       </nav>
       <nav aria-label='Popular'>
-        <h4>Popular</h4>
+        <h2 class='foot-title'>Popular</h2>
         <ul>
           <li><a href='/search/?q=reading+settings'>Change font, size and theme</a></li>
           <li><a href='/search/?q=comments+not+showing'>Comments not showing</a></li>
@@ -119,7 +121,7 @@ st.className='fb-status is-ok';st.textContent='Copied. In the new tab, paste it 
         </ul>
       </nav>
       <nav aria-label='Site'>
-        <h4>GroupChatOn</h4>
+        <h2 class='foot-title'>GroupChatOn</h2>
         <ul>
           <li><a href='https://www.groupchaton.com/'>Read novels</a></li>
           <li><a href='https://infinity.groupchaton.com/'>Free tools</a></li>

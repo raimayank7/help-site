@@ -1,5 +1,5 @@
 /* GroupChatOn Help service worker: pages network first (always fresh), saved copy when offline; CSS/JS/fonts saved copy first. */
-var V = 'ec662575', PAGES = 'help-pages-' + V, FILES = 'help-files-' + V;
+var V = 'b6143cd1', PAGES = 'help-pages-' + V, FILES = 'help-files-' + V;
 self.addEventListener('install', function (e) { e.waitUntil(caches.open(PAGES).then(function (c) { return c.addAll(['/', '/offline.html']); }).then(function () { return self.skipWaiting(); })); });
 self.addEventListener('activate', function (e) {
   e.waitUntil(caches.keys().then(function (ks) { return Promise.all(ks.filter(function (k) { return /^help-/.test(k) && k !== PAGES && k !== FILES; }).map(function (k) { return caches.delete(k); })); })
